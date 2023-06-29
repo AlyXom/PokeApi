@@ -1,12 +1,15 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 
-export interface Stars {
+export interface PokemonData {
     name: string
     abilities: [],
     id: number,
     moves: [],
-    sprites: {},
+    sprites: {
+        backDefault: string,
+        frontDefault: string
+    },
     forms?: [],
     heldItems?: [],
     isDefault: true,
@@ -21,13 +24,13 @@ export interface Stars {
 
 }
 
-const initialState: Stars[] = []
+const initialState: PokemonData[] = []
 
 export const pokeStars = createSlice({
     name: 'stars',
     initialState: initialState,
     reducers: {
-        addFavorite: (state, action: PayloadAction<Stars>) => {
+        addFavorite: (state, action: PayloadAction<PokemonData>) => {
             return [...state, action.payload]
         }
     }
