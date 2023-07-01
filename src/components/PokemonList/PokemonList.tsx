@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, FlatList, Image, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
 import { PokemonData } from '../../redux/starReducer/StarSlice'
 import axios, { Axios } from 'axios'
-import PokemonCard from '../Card/PokemonCard'
+import PokemonCard from '../card/PokemonCard'
 
 
 
@@ -27,7 +27,7 @@ export default function PokemonList() {
 
     const [pokemons, getPokemons] = useState([])
 
-    axios.get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=5')
+    axios.get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=1010')
         .then(response => response.data)
         .then((data: Data) => {
             setIsLoading(false)
@@ -38,12 +38,12 @@ export default function PokemonList() {
 
 
     return (
-        <View style={{height: '80%', backgroundColor: 'green', flexGrow: 1, alignItems: 'center'}}>
-            <ScrollView>
-                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+        <View style={{height: '80%', flexGrow: 1, alignItems: 'center'}}>
+            <ScrollView style={{width: '100%'}}>
+                <View style={{flexDirection: 'row', flexWrap: 'wrap', width: '100%'}}>
                     {isLoading ? <ActivityIndicator size='small'/> :  pokemons.map((pokemon, index) => {
                         return (
-                            <View key={pokemon.name}>
+                            <View style={{width: '33%', padding: 10}} key={pokemon.name}>
                                 <PokemonCard pokemon={pokemon} index={index}/>
                             </View>
                         )

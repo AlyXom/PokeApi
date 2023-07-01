@@ -52,14 +52,14 @@ export default function PokemonCard(pokeprops) {
 
 
     return (
-        <View>
+        <View style={{width: '100%', height: 150, borderRadius: 20}}>
             {isLoading
                 ?
                 <ActivityIndicator size='small' />
                 :
-                <View key={pokeData?.id}>
-                    <Text>{pokeData?.name}</Text>
-                    {imageIsLoading ? <ActivityIndicator size="small"/> : <Image source={{uri: pokeData?.sprites?.frontDefault}}/>}
+                <View style={{backgroundColor: 'blue', marginLeft: 10, borderRadius: 20, padding: 10, alignItems: 'center'}} key={pokeData?.id}>
+                    <Text style={{fontSize: 12}}>{pokeData?.name}</Text>
+                    {imageIsLoading ? <ActivityIndicator size="large"/> : <Image style={{width: 100, height: 100}} source={{uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeData?.id}.png`}}/>}
                     <Text>{pokeData?.id}</Text>
                 </View>}
         </View>
