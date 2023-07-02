@@ -55,7 +55,7 @@ export default function PokemonCard(pokeprops) {
         <View style={{width: '100%', height: 150, borderRadius: 20}}>
             {isLoading
                 ?
-                <ActivityIndicator size='small' />
+                <ActivityIndicator size='large' />
                 :
                 <View style={{backgroundColor: 'blue', marginLeft: 10, borderRadius: 20, padding: 10, alignItems: 'center'}} key={pokeData?.id}>
                     <Text style={{fontSize: 12}}>{pokeData?.name}</Text>
