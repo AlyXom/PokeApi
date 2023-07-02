@@ -30,7 +30,7 @@ interface pokemonsInfo {
     }
 }
 
-export default function PokemonCard(pokeprops) {
+export default function PokemonCard(pokeprops: {pokemon: {name: string, url: string}, index: number}) {
 
     const [isLoading, setIsLoading] = useState(true)
     const [imageIsLoading, setImageIsLoading] = useState(false)
@@ -46,9 +46,11 @@ export default function PokemonCard(pokeprops) {
         .then((data: pokemonsInfo) => {
             setIsLoading(false)
             getPokeData(data)
+            console.log(index)
         })
         .catch(error => console.log(error))
-    }, [pokeData])
+    }, [])
+
 
 
     return (
@@ -58,7 +60,6 @@ export default function PokemonCard(pokeprops) {
                 <ActivityIndicator size='large' />
                 :
                 <View style={{backgroundColor: 'blue', marginLeft: 10, borderRadius: 20, padding: 10, alignItems: 'center'}} key={pokeData?.id}>
-                    <Text style={{fontSize: 12}}>{pokeData?.name}</Text>
                     {imageIsLoading ? <ActivityIndicator size="large"/> : <Image style={{width: 100, height: 100}} source={{uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeData?.id}.png`}}/>}
                     <Text>{pokeData?.id}</Text>
                 </View>}
