@@ -1,68 +1,42 @@
-import React, { useEffect, useState} from "react";
-import { View, Text, FlatList, ScrollView, Image, ActivityIndicator } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, ActivityIndicator, TouchableOpacity } from "react-native";
 import axios from "axios";
+import { pokemonsInfo } from "../../types/pokemonInfo";
 
-
-interface pokemonsInfo {
-    abilities?: []
-    baseExperience?: number
-    forms?: []
-    gameIndices?: []
-    height?: number
-    heldItems?: []
-    id?: number
-    isDefault?: boolean
-    locationAreaEncounters?: string
-    moves?: []
-    name?: string
-    order?: number
-    pastTypes?: []
-    species?: {}
-    sprites?: {
-        backDefault?: string,
-        backFemale?: string,
-        backShiny?: string,
-        backShinyFemale?: string,
-        frontDefault?: string,
-        frontFemale?: string,
-        frontShiny?: string,
-        frontShinyFemale?: string,
-    }
-}
-
-export default function PokemonCard(pokeprops: {pokemon: {name: string, url: string}, index: number}) {
+export default function PokemonCard(pokeprops: { pokemon: { name: string, url: string }, index: number, navigation: any }) {
 
     const [isLoading, setIsLoading] = useState(true)
     const [imageIsLoading, setImageIsLoading] = useState(false)
 
     const [pokeData, getPokeData] = useState<pokemonsInfo>()
-    
+
     const pokemons = pokeprops.pokemon
-    const index = pokeprops.index
+    const navigation = pokeprops.navigation
 
     useEffect(() => {
         axios.get(pokemons.url)
-        .then(response => response.data)
-        .then((data: pokemonsInfo) => {
-            setIsLoading(false)
-            getPokeData(data)
-            console.log(index)
-        })
-        .catch(error => console.log(error))
+            .then(response => response.data)
+            .then((data: pokemonsInfo) => {
+                setIsLoading(false)
+                getPokeData(data)
+            })
+            .catch(error => console.log(error))
     }, [])
 
 
 
     return (
-        <View style={{width: '100%', height: 150, borderRadius: 20}}>
+        <View style={{ width: '100%', height: 150, borderRadius: 20 }}>
+            <TouchableOpacity onPress={() => navigation.navigate('Details', { infos: pokeData })}>
             {isLoading
                 ?
                 <ActivityIndicator size='large' />
                 :
-                <View style={{backgroundColor: 'blue', marginLeft: 10, borderRadius: 20, padding: 10, alignItems: 'center'}} key={pokeData?.id}>
-                    {imageIsLoading ? <ActivityIndicator size="large"/> : <Image style={{width: 100, height: 100}} source={{uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeData?.id}.png`}}/>}
+                <View style={{ backgroundColor: 'blue', marginLeft: 10, borderRadius: 20, padding: 10, alignItems: 'center' }} key={pokeData?.id}>
+                    {imageIsLoading ? <ActivityIndicator size="large" /> : <Image style={{ width: 90, height: 90 }} source={{ uri: pokeData?.sprites?.front_default ?? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeData?.id}.png` }} />}
                     <Text>{pokeData?.id}</Text>
                 </View>}
+            </TouchableOpacity>
         </View>
     )
 }
