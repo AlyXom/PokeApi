@@ -1,55 +1,87 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, FlatList, Image, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
-import { PokemonData } from '../../redux/starReducer/StarSlice'
-import axios, { Axios } from 'axios'
-import PokemonCard from '../Card/PokemonCard'
-
-
-
-interface pokemonInfo {
-    item: {
-        name: string,
-        url: string
-    },
-    index: number,
-}
+import { View, Text, ScrollView, ActivityIndicator } from 'react-native'
+import { S } from '../styledComponents/styles'
+import axios from 'axios'
+import PokemonCard from '../card/PokemonCard'
 
 interface Data {
     count?: number,
-    next?: null,
-    previous?: null,
-    results: Array<{name: string, url: string}>
+    next?: string,
+    previous?: string,
+    results: [{
+        name: string,
+        url: string
+    }]
 }
 
-export default function PokemonList() {
+export default function PokemonList({ navigation }: any) {
 
     const [isLoading, setIsLoading] = useState(true)
+    const [infos, getInfos] = useState<Data>()
+    const [pokemonCount, setCount] = useState<string>('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=183')
+    const [pokemons, getPokemons] = useState<[{ name: string, url: string }]>([{ name: '', url: '' }])
 
-    const [pokemons, getPokemons] = useState([])
+    useEffect(() => {
+        axios.get(pokemonCount)
+            .then(response => response.data)
+            .then((data: Data) => {
+                if (data) {
+                    setIsLoading(false)
+                    getInfos(data)
+                    getPokemons(data.results)
+                }
 
-    axios.get('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=5')
-        .then(response => response.data)
-        .then((data: Data) => {
-            setIsLoading(false)
-            getPokemons(data.results)
+            })
+            .catch(error => console.warn(error))
+    }, [pokemonCount, isLoading])
 
-        })
-        .catch(error => console.log(error))
 
 
     return (
-        <View style={{height: '80%', backgroundColor: 'green', flexGrow: 1, alignItems: 'center'}}>
-            <ScrollView>
-                <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
-                    {isLoading ? <ActivityIndicator size='small'/> :  pokemons.map((pokemon, index) => {
+        <View style={{ height: '80%', flexGrow: 1, alignItems: 'center' }}>
+
+            <ScrollView style={{ width: '100%' }}>
+                <View style={isLoading ? { alignItems: 'center' } : { flexDirection: 'row', flexWrap: 'wrap', width: '100%' }}>
+                    {isLoading ? <ActivityIndicator size='large' /> : pokemons.map((pokemon, index: number) => {
                         return (
-                            <View key={pokemon.name}>
-                                <PokemonCard pokemon={pokemon} index={index}/>
+                            <View style={{ width: '33%', padding: 10 }} key={pokemon.name}>
+                                <PokemonCard navigation={navigation} pokemon={pokemon} index={index} />
                             </View>
                         )
                     })}
                 </View>
             </ScrollView>
+            <View style={{justifyContent: 'center', flexDirection: 'row-reverse'}}>
+            {infos?.next == null ? (
+                <View></View>
+            ) : (
+                <S.NextAndPrevious onPress={async () => {
+                    setIsLoading(true)
+                    await setCount(infos?.next ?? "")
+                }}>Próximo</S.NextAndPrevious>
+            )
+            }
+            {infos?.previous == null ? (
+                <View></View>
+            ) : (infos.next == null ? (
+                <View style={{flexDirection: 'row-reverse', marginLeft: 5}}>
+                    <S.NextAndPrevious onPress={() => {
+                        setIsLoading(true)
+                        setCount('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=183')
+                    }}>Voltar pro inicio</S.NextAndPrevious>
+                    <S.NextAndPrevious onPress={() => {
+                        setIsLoading(true)
+                        setCount(infos.previous ?? "")
+                    }}>Voltar</S.NextAndPrevious>
+                </View>
+            ) : (
+                <S.NextAndPrevious onPress={() => {
+                    setIsLoading(true)
+                    setCount(infos.previous ?? "")
+                }}>Voltar</S.NextAndPrevious>)
+            )
+            }
+            </View>
         </View>
     )
 }
