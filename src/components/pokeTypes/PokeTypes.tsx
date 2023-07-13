@@ -15,9 +15,9 @@ export default function PokeTypes(props: {types: [{slot: number, type: {name: st
 
     return (
         <View style={{flexDirection: 'row'}}>
-            {types.map((item: {slot: number, type: {name: string, url: string}}) => {
+            {types.map((item: {slot: number, type: {name: string, url: string}}, index: number) => {
                 return (
-                    <TypesInfo typeName={item.type.name}/>
+                    <TypesInfo key={index} typeName={item.type.name}/>
                 )
             })}
         </View>

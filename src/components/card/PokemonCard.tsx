@@ -30,9 +30,9 @@ export default function PokemonCard(pokeprops: { pokemon: { name: string, url: s
             <TouchableOpacity onPress={() => navigation.navigate('Details', { infos: pokeData })}>
             {isLoading
                 ?
-                <ActivityIndicator size='large' />
+                <ActivityIndicator color={'#c03028'} size='large' />
                 :
-                <View style={{ backgroundColor: 'blue', marginLeft: 10, borderRadius: 20, padding: 10, alignItems: 'center' }} key={pokeData?.id}>
+                <View style={{ backgroundColor: '#cfcfcf', marginLeft: 10, borderRadius: 20, padding: 10, alignItems: 'center' }} key={pokeData?.id}>
                     {imageIsLoading ? <ActivityIndicator size="large" /> : <Image style={{ width: 90, height: 90 }} source={{ uri: pokeData?.sprites?.front_default ?? `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokeData?.id}.png` }} />}
                     <Text>{pokeData?.id}</Text>
                 </View>}

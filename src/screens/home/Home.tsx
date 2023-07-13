@@ -1,14 +1,15 @@
 import React, {useState} from 'react'
-import { View, Text } from 'react-native'
+import { Image } from 'react-native'
 import { S } from '../../components/styledComponents/styles'
 import PokemonList from '../../components/PokemonList/PokemonList'
+import Header from '../../components/header/Header'
 
 export default function Home({navigation}: any) {
 
     return (
         <S.MainContainer>
+            <Header navigation={navigation}/>
             <S.Container>
-                <Text>Bom dia</Text>
                 <PokemonList navigation={navigation}/>
             </S.Container>
         </S.MainContainer>

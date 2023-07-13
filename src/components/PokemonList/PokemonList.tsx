@@ -42,7 +42,7 @@ export default function PokemonList({ navigation }: any) {
 
             <ScrollView style={{ width: '100%' }}>
                 <View style={isLoading ? { alignItems: 'center' } : { flexDirection: 'row', flexWrap: 'wrap', width: '100%' }}>
-                    {isLoading ? <ActivityIndicator size='large' /> : pokemons.map((pokemon, index: number) => {
+                    {isLoading ? <ActivityIndicator color={'#c03028'} size='large' /> : pokemons.map((pokemon, index: number) => {
                         return (
                             <View style={{ width: '33%', padding: 10 }} key={pokemon.name}>
                                 <PokemonCard navigation={navigation} pokemon={pokemon} index={index} />
@@ -55,7 +55,7 @@ export default function PokemonList({ navigation }: any) {
             {infos?.next == null ? (
                 <View></View>
             ) : (
-                <S.NextAndPrevious onPress={async () => {
+                <S.NextAndPrevious style={{backgroundColor: '#c03028'}} onPress={async () => {
                     setIsLoading(true)
                     await setCount(infos?.next ?? "")
                 }}>Próximo</S.NextAndPrevious>
@@ -65,17 +65,17 @@ export default function PokemonList({ navigation }: any) {
                 <View></View>
             ) : (infos.next == null ? (
                 <View style={{flexDirection: 'row-reverse', marginLeft: 5}}>
-                    <S.NextAndPrevious onPress={() => {
+                    <S.NextAndPrevious style={{backgroundColor: '#7038f8'}} onPress={() => {
                         setIsLoading(true)
                         setCount('https://pokeapi.co/api/v2/pokemon/?offset=0&limit=183')
                     }}>Voltar pro inicio</S.NextAndPrevious>
-                    <S.NextAndPrevious onPress={() => {
+                    <S.NextAndPrevious style={{backgroundColor: '#f8d030'}} onPress={() => {
                         setIsLoading(true)
                         setCount(infos.previous ?? "")
                     }}>Voltar</S.NextAndPrevious>
                 </View>
             ) : (
-                <S.NextAndPrevious onPress={() => {
+                <S.NextAndPrevious style={{backgroundColor: '#f8d030'}} onPress={() => {
                     setIsLoading(true)
                     setCount(infos.previous ?? "")
                 }}>Voltar</S.NextAndPrevious>)

@@ -3,7 +3,6 @@ import { Text, View } from "react-native";
 import { S } from "../styledComponents/styles";
 
 export default function TypesInfo(props: {typeName: string}) {
-    console.log(props.typeName)
     return (
         <View key={props.typeName}>
             {
